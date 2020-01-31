@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "dam"
 version = "0.1.0"
-description = "Python Stream Processing toolkit"
+description = "Python Stream Processing minimalistic toolkit"
 authors = [
     "Marcos Schroh <schrohm@gmail.com>",
     "Santiago Fraire Willemoës <santiwilly@gmail.com>"
@@ -11,6 +11,7 @@ keywords = ["stream", "processing", "streaming", "async"]
 
 [tool.poetry.dependencies]
 python = "^3.7"
+aiokafka = "^0.5.2"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.3.5"
