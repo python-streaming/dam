@@ -35,3 +35,12 @@ while True:
 1. Clone repository
 2. Run `poetry install`
 3. Write apps inside `example` folder (for now)
+
+## TODO
+
+- [ ] emit events interface
+- [ ] timers
+- [ ] Kstream feature compatibility
+- [ ] general interface stability
+- [ ] documentation
+- [ ] tests
