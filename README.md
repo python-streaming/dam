@@ -1,12 +1,14 @@
 # dam
 
-Python Stream Processing toolkit
+> Python Stream Processing minimalistic toolkit
 
 :warning: WARNING :warning:
 
 _This repo is highly experimental and it's not recommended for production use._
 
 _The interface may change at any time during initial development._
+
+_Still not published to pypi._
 
 ```python
 import asyncio
