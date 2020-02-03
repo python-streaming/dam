@@ -25,24 +25,19 @@ topics = [
     Topic("test-topic-worker", hello_world)
 ]
 
-streamapp = App(topics=topics)
+streamapp = App(topics=topics, broker="kafka:0.0.0.0:29092")
 
 while True:
     # This should be any other worker
     loop.run_until_complete(streamapp.run())
 ```
 
+## Example
+
+- [simple-kafka-consumer](example/simple-kafka-consumer)
+
 ## Usage
 
 1. Clone repository
 2. Run `poetry install`
 3. Write apps inside `example` folder (for now)
-
-## TODO
-
-- [ ] emit events interface
-- [ ] timers
-- [ ] Kstream feature compatibility
-- [ ] general interface stability
-- [ ] documentation
-- [ ] tests

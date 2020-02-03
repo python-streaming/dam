@@ -1,7 +1,7 @@
 import asyncio
-from typing import Callable
+from typing import Callable, Dict
 
-from aiokafka import AIOKafkaConsumer
+from aiokafka import AIOKafkaConsumer, errors
 
 from dam.stream import Stream
 
@@ -9,9 +9,13 @@ from dam.stream import Stream
 class Topic:
     """Kafka topic"""
 
-    def __init__(self, name: str, func: Callable):
+    def __init__(self, name: str, func: Callable, **kwargs):
         self.name = name
         self.func = func
+        self.consumer_kwargs: Dict = kwargs
+
+    def _configure(self, conf: Dict):
+        self.conf = conf
 
     def create_consumer(
         self, name: str, loop: asyncio.AbstractEventLoop = None
@@ -22,13 +26,14 @@ class Topic:
         return AIOKafkaConsumer(
             name,
             loop=loop,
-            bootstrap_servers="0.0.0.0:29092",
-            group_id="test-consumer-group",
             auto_offset_reset="earliest",
+            **self.conf,
+            **self.consumer_kwargs
         )
 
     async def run(self):
         consumer = self.create_consumer(self.name)
+
         await consumer.start()
 
         try:
@@ -37,29 +42,3 @@ class Topic:
         finally:
             # Will leave consumer group; perform autocommit if enabled.
             await consumer.stop()
-
-
-# async def consume_from_kafka(loop):
-#     logger.debug("Task Consuming from kafka initiated...")
-#     consumer = AIOKafkaConsumer(
-#         TOPIC,
-#         loop=loop,
-#         bootstrap_servers=BOOTSTRAP_SERVERS,
-#         group_id=GROUP_ID,
-#         auto_offset_reset=AUTO_OFFSET_RESET,
-#     )
-
-#     # Get cluster layout and join group `my-group`await consumer.start()
-#     await consumer.start()
-
-#     try:
-#         # Consume messages
-#         async for msg in consumer:
-#             print(f"Task Consuming from kafka")
-#             print(
-#                 f"Topic: {msg.topic}, Partition: {msg.partition}, Offset: {msg.offset},"
-#                 f" Key: {msg.key}, Value: {msg.value}, Timestamp: {msg.timestamp}\n"
-#             )
-#     finally:
-#         # Will leave consumer group; perform autocommit if enabled.
-#         await consumer.stop()
